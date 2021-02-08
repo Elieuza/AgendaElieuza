@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace Agenda
 {
@@ -16,5 +17,105 @@ namespace Agenda
         {
             InitializeComponent();
         }
+
+        private void btnGravar_Click(object sender, EventArgs e)
+        {
+            SqlConnection objCon = Conexao.Conectar();
+            try
+            {
+                SqlCommand SqlComd = new SqlCommand(@"INSERT INTO(Nome,Email)" +
+                    "VALUES(@nome,@email)", objCon);
+                SqlComd.Parameters.AddWithValue("@nome", txtNome.Text);
+                SqlComd.Parameters.AddWithValue("@email", txtEmail.Text);
+                SqlComd.ExecuteNonQuery();
+                MessageBox.Show("Informações gravadas com sucesso!");
+                Conexao.fecharConexao();
+                Exibir();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+
+
+        private void limparControles()
+        {
+            txtNome.Text = "";
+            txtEmail.Text = "";
+        }
+
+        private void frmAgenda_Load(object sender, EventArgs e)
+        {
+            Exibir();
+        }
+        private void Exibir()
+        {
+            SqlConnection objCon = Conexao.Conectar();
+            SqlCommand cmd = new SqlCommand("Select * from contatos ", objCon);
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            adapter.SelectCommand = cmd;
+            DataSet dataSet = new DataSet();
+            adapter.Fill(dataSet);
+
+            dgvDados.DataSource = dataSet;
+            dgvDados.DataMember = dataSet.Tables[0].TableName;
+
+            Conexao.fecharConexao();
+        }
+
+        private void btnLimpar_Click(object sender, EventArgs e)
+        {
+            limparControles();
+        }
+
+        private void btnFechar_Click(object sender, EventArgs e)
+        {
+            DialogResult resposta = MessageBox.Show("Deseja realmente sair?",
+                "Agenda de Contatos", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (resposta == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
+        private void btnDeletar_Click(object sender, EventArgs e)
+        {
+            String valorId = Convert.ToString(this.dgvDados.CurrentRow.Cells["id"].Value);
+
+        }
+    }
+    class Conexao
+    {
+        private static SqlConnection sqlCon = null;
+        private static SqlCommand SqlComd;
+        private SqlDataAdapter dr;
+        private static String conectionString = " Data Source=.\\SQLEXPRESS;" +
+                                                 "Initial Catalog = Agenda;" +
+                                                 "User ID = sa;" +
+                                                 "Password = 3121";
+
+        public static SqlConnection Conectar()
+        {
+            sqlCon = new SqlConnection();
+            try
+            {
+                sqlCon.Open();
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            return sqlCon;
+        }
+        public static void fecharConexao()
+        {
+            if (sqlCon != null)
+            {
+                sqlCon.Close();
+            }
+        }
+
     }
 }

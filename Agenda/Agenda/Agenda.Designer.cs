@@ -84,6 +84,7 @@ namespace Agenda
             this.btnGravar.TabIndex = 4;
             this.btnGravar.Text = "Gravar";
             this.btnGravar.UseVisualStyleBackColor = true;
+            this.btnGravar.Click += new System.EventHandler(this.btnGravar_Click);
             // 
             // btnLimpar
             // 
@@ -93,6 +94,7 @@ namespace Agenda
             this.btnLimpar.TabIndex = 5;
             this.btnLimpar.Text = "Limpar";
             this.btnLimpar.UseVisualStyleBackColor = true;
+            this.btnLimpar.Click += new System.EventHandler(this.btnLimpar_Click);
             // 
             // btnDeletar
             // 
@@ -102,6 +104,7 @@ namespace Agenda
             this.btnDeletar.TabIndex = 6;
             this.btnDeletar.Text = "Deletar";
             this.btnDeletar.UseVisualStyleBackColor = true;
+            this.btnDeletar.Click += new System.EventHandler(this.btnDeletar_Click);
             // 
             // btnAtualizar
             // 
@@ -120,6 +123,7 @@ namespace Agenda
             this.btnFechar.TabIndex = 8;
             this.btnFechar.Text = "Fechar";
             this.btnFechar.UseVisualStyleBackColor = true;
+            this.btnFechar.Click += new System.EventHandler(this.btnFechar_Click);
             // 
             // dgvDados
             // 
@@ -148,6 +152,7 @@ namespace Agenda
             this.Name = "frmAgenda";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Agenda de Contatos";
+            this.Load += new System.EventHandler(this.frmAgenda_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDados)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
