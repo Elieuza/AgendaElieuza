@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
+
 namespace Agenda
 {
+
     public partial class frmAgenda : Form
     {
         public frmAgenda()
@@ -23,7 +25,7 @@ namespace Agenda
             SqlConnection objCon = Conexao.Conectar();
             try
             {
-                SqlCommand SqlComd = new SqlCommand(@"INSERT INTO(Nome,Email)" +
+                SqlCommand SqlComd = new SqlCommand(@"INSERT INTO(Nome,Email) " +
                     "VALUES(@nome,@email)", objCon);
                 SqlComd.Parameters.AddWithValue("@nome", txtNome.Text);
                 SqlComd.Parameters.AddWithValue("@email", txtEmail.Text);
@@ -54,6 +56,7 @@ namespace Agenda
         {
             SqlConnection objCon = Conexao.Conectar();
             SqlCommand cmd = new SqlCommand("Select * from contatos ", objCon);
+
             SqlDataAdapter adapter = new SqlDataAdapter();
             adapter.SelectCommand = cmd;
             DataSet dataSet = new DataSet();
@@ -82,7 +85,16 @@ namespace Agenda
 
         private void btnDeletar_Click(object sender, EventArgs e)
         {
-            String valorId = Convert.ToString(this.dgvDados.CurrentRow.Cells["id"].Value);
+            String resposta = Convert.ToString(this.dgvDados.CurrentRow.Cells["id"].Value);
+            if (resposta != string.Empty)
+            {
+                SqlConnection objCon = Conexao.Conectar();
+                SqlCommand Comd = new SqlCommand("delete from contatos where id='" + resposta + "';");
+                Comd.ExecuteNonQuery();
+                MessageBox.Show("Registro apagado com sucesso!");
+                Conexao.fecharConexao();
+                Exibir();
+            }
 
         }
     }
@@ -98,7 +110,7 @@ namespace Agenda
 
         public static SqlConnection Conectar()
         {
-            sqlCon = new SqlConnection();
+            sqlCon = new SqlConnection(conectionString);
             try
             {
                 sqlCon.Open();
