@@ -25,8 +25,8 @@ namespace Agenda
             SqlConnection objCon = Conexao.Conectar();
             try
             {
-                SqlCommand SqlComd = new SqlCommand(@"INSERT INTO(Nome,Email) " +
-                    "VALUES(@nome,@email)", objCon);
+                SqlCommand SqlComd = new SqlCommand(@"INSERT INTO Contatos(Nome,Email) " +
+                    "VALUES(@nome,@email)",objCon);
                 SqlComd.Parameters.AddWithValue("@nome", txtNome.Text);
                 SqlComd.Parameters.AddWithValue("@email", txtEmail.Text);
                 SqlComd.ExecuteNonQuery();
@@ -96,6 +96,28 @@ namespace Agenda
                 Exibir();
             }
 
+        }
+
+        private void dgvDados_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            this.txtNome.Text = Convert.ToString(this.dgvDados.CurrentRow.Cells["nome"].Value);
+            this.txtEmail.Text = Convert.ToString(this.dgvDados.CurrentRow.Cells["email"].Value);
+            
+
+        }
+
+        private void btnAtualizar_Click(object sender, EventArgs e)
+        {
+            string campoID = Convert.ToString(this.dgvDados.CurrentRow.Cells[id]);
+            if (campoID != string.Empty)
+            {
+                SqlConnection objCon = Conexao.Conectar();
+                SqlCommand Comd = new SqlCommand("update contatos set nome='"+txtNome.Text+"',email='"+txtEmail.Text+"' where id=" +campoID+";",objCon);
+
+                Comd.ExecuteNonQuery();
+                MessageBox.Show("Registro atualizado com sucesso!");
+                Exibir();
+            }
         }
     }
     class Conexao

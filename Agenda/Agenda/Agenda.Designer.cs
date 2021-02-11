@@ -114,6 +114,7 @@ namespace Agenda
             this.btnAtualizar.TabIndex = 7;
             this.btnAtualizar.Text = "Atualizar";
             this.btnAtualizar.UseVisualStyleBackColor = true;
+            this.btnAtualizar.Click += new System.EventHandler(this.btnAtualizar_Click);
             // 
             // btnFechar
             // 
@@ -132,6 +133,7 @@ namespace Agenda
             this.dgvDados.Name = "dgvDados";
             this.dgvDados.Size = new System.Drawing.Size(399, 164);
             this.dgvDados.TabIndex = 9;
+            this.dgvDados.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDados_CellContentClick);
             // 
             // frmAgenda
             // 
